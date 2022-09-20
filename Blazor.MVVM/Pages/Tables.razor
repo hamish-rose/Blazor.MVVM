@@ -1,0 +1,107 @@
+@page "/Tables"
+@inherits ComponentWithViewModel<Blazor.MVVM.ViewModels.TablesPageViewModel>
+
+<h3>Tables</h3>
+
+<div class="row">
+    <div class="col-md-12 mb-2">
+        <div class="card shadow">
+            <div class="card-header">Rapid Table</div>
+            <div class="card-body">
+                <RapidTable ItemLimit="10"
+                            Source="@ViewModel!.GetTickFeedAsync()"
+                            TItem="Tick"
+                            OnRowSelect="OnClickRowAsync"
+                            Class="table table-striped table-borderless table-hover">
+                    <HeaderTemplate>
+                        <tr>
+                            <th> Name</th>
+                            <th class="text-right"> Price</th>
+                            <th class="text-right"> Timestamp</th>
+                        </tr>
+                    </HeaderTemplate>
+                    <ItemTemplate Context="tick">
+                        <tr>
+                            <td>@tick.Name</td>
+                            <td class="text-right">@tick.Price</td>
+                            <td class="text-right">@tick.Timestamp.ToString()</td>
+                        </tr>
+                    </ItemTemplate>
+                </RapidTable>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-2">
+        <div class="card shadow">
+            <div class="card-header">Paged Table</div>
+            <div class="card-body">
+                <PagedTable class="table table-borderless table-hover overflow-auto"
+                            Items="ViewModel.Ticks"
+                            TItem="Tick"
+                            PageSize="10"
+                            OnRowSelect="OnClickRowAsync">
+                    <HeaderTemplate>
+                        <tr>
+                            <th> Name</th>
+                            <th class="text-right"> Price</th>
+                            <th class="text-right"> Timestamp</th>
+                        </tr>
+                    </HeaderTemplate>
+                    <ItemTemplate Context="tick">
+                        <tr>
+                            <td>@tick.Name</td>
+                            <td class="text-right">@tick.Price</td>
+                            <td class="text-right">@tick.Timestamp</td>
+                        </tr>
+                    </ItemTemplate>
+                </PagedTable>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 mb-2">
+        <div class="card shadow">
+            <div class="card-header"> Virtual paged table</div>
+            <div class="card-body">
+                <VirtualPagedTable Class="table table-borderless table-hover overflow-auto"
+                                   ItemsProvider="request => ViewModel.GetTickPageAsync(request)"
+                                   OnRowSelect="OnClickRowAsync"
+                                   TItem="Tick"
+                                   PageSize="10">
+                    <HeaderTemplate>
+                        <tr>
+                            <th> Name</th>
+                            <th class="text-right"> Price</th>
+                            <th class="text-right"> Timestamp</th>
+                        </tr>
+                    </HeaderTemplate>
+                    <ItemTemplate Context="tick">
+                        <tr>
+                            <td>@tick.Name</td>
+                            <td class="text-right">@tick.Price</td>
+                            <td class="text-right">@tick.Timestamp.ToString()</td>
+                        </tr>
+                    </ItemTemplate>
+                </VirtualPagedTable>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code
+{
+    private async Task OnClickRowAsync(Tick tick)
+    {
+        await ModalService.ShowAsync<InfoDialog>(new Dictionary<string, object>
+        {
+            { nameof(InfoDialog.Title), $"Tick {tick.Name}" },
+            { nameof(InfoDialog.Message), $"Viewing {tick.Name}, Price {tick.Price} at {tick.Timestamp.ToString()}" },
+        });
+    }
+}

@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blazor.MVVM.Lib\Blazor.MVVM.Lib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\modal.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Components.WebAssembly">
+      <HintPath>..\..\..\.nuget\packages\microsoft.aspnetcore.components.webassembly\6.0.9\lib\net6.0\Microsoft.AspNetCore.Components.WebAssembly.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
